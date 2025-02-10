@@ -1,5 +1,6 @@
 package planets
 
+import "core:fmt"
 import rl "vendor:raylib"
 
 Vec2f :: [2]f32
@@ -37,14 +38,14 @@ celestial_bodies := []Body {
 		rad = 10.0,
 		colour = rl.YELLOW,
 	},
-	{name = "Mercury", rad = 10.0, dis_from_sun = 0.39, colour = rl.RED},
-	{name = "Venus", rad = 10.0, dis_from_sun = 0.72, colour = rl.ORANGE},
-	{name = "Earth", rad = 10.0, dis_from_sun = 1.0, colour = rl.GREEN},
-	{name = "Mars", rad = 10.0, dis_from_sun = 1.52, colour = rl.RED},
-	{name = "Jupiter", rad = 10.0, dis_from_sun = 5.2, colour = rl.BLUE},
-	{name = "Saturn", rad = 10.0, dis_from_sun = 9.58, colour = rl.BROWN},
-	{name = "Uranus", rad = 10.0, dis_from_sun = 19.18, colour = rl.BLUE},
-	{name = "Neptune", rad = 10.0, dis_from_sun = 30.07, colour = rl.BLUE},
+	{name = "Mercury", rad = 10.0, dis_from_sun = 0.39, colour = {169, 169, 169, 255}},
+	{name = "Venus", rad = 10.0, dis_from_sun = 0.72, colour = {205, 186, 150, 255}},
+	{name = "Earth", rad = 10.0, dis_from_sun = 1.0, colour = {58, 117, 196, 255}},
+	{name = "Mars", rad = 10.0, dis_from_sun = 1.52, colour = {201, 81, 58, 255}},
+	{name = "Jupiter", rad = 10.0, dis_from_sun = 5.2, colour = {218, 165, 105, 255}},
+	{name = "Saturn", rad = 10.0, dis_from_sun = 9.58, colour = {216, 188, 126, 255}},
+	{name = "Uranus", rad = 10.0, dis_from_sun = 19.18, colour = {173, 216, 230, 255}},
+	{name = "Neptune", rad = 10.0, dis_from_sun = 30.07, colour = {46, 89, 162, 255}},
 }
 
 main :: proc() {
@@ -67,6 +68,13 @@ main :: proc() {
 render :: proc() {
 	for b in celestial_bodies {
 		rl.DrawCircleV(b.pos, b.rad, b.colour.rgba)
+		rl.DrawText(
+			fmt.ctprint(b.name),
+			i32(b.pos.x + b.rad * 1.5),
+			i32(b.pos.y - b.rad * 0.5),
+			10,
+			rl.LIGHTGRAY,
+		)
 	}
 }
 
