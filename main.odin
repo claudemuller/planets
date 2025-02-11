@@ -48,24 +48,47 @@ celestial_bodies := []Body {
 	{name = "Neptune", rad = 10.0, dis_from_sun = 30.07, colour = {46, 89, 162, 255}},
 }
 
+camera := rl.Camera2D {
+	zoom   = 1,
+	offset = {WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2},
+	target = celestial_bodies[0].pos,
+}
+
 main :: proc() {
 	rl.InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Planets")
 
 	for !rl.WindowShouldClose() {
-		rl.BeginDrawing()
-
+		process_input()
 		update()
-
-		rl.ClearBackground(rl.BLACK)
 		render()
-
-		rl.EndDrawing()
 	}
 
 	rl.CloseWindow()
 }
 
+process_input :: proc() {
+	camera.zoom += rl.GetMouseWheelMove() * 0.1
+	camera.target = rl.GetMousePosition()
+}
+
+update :: proc() {
+	dt := rl.GetFrameTime()
+
+	for b, i in celestial_bodies {
+		if b.dis_from_sun > 0 {
+			celestial_bodies[i].pos = {
+				(WINDOW_WIDTH / 2) - b.rad,
+				celestial_bodies[0].pos.y - b.dis_from_sun * 50.0,
+			}
+		}
+	}
+}
+
 render :: proc() {
+	rl.BeginDrawing()
+	rl.BeginMode2D(camera)
+	rl.ClearBackground(rl.BLACK)
+
 	for b in celestial_bodies {
 		rl.DrawCircleV(b.pos, b.rad, b.colour.rgba)
 		rl.DrawText(
@@ -76,17 +99,9 @@ render :: proc() {
 			rl.LIGHTGRAY,
 		)
 	}
-}
 
-update :: proc() {
-	for b, i in celestial_bodies {
-		if b.dis_from_sun > 0 {
-			celestial_bodies[i].pos = {
-				(WINDOW_WIDTH / 2) - b.rad,
-				celestial_bodies[0].pos.y - b.dis_from_sun * 50.0,
-			}
-		}
-	}
+	rl.EndMode2D()
+	rl.EndDrawing()
 }
 
 distance_in_pixels :: proc(distance_in_km: f32) -> f32 {
