@@ -291,7 +291,6 @@ render_ui :: proc() {
 		"Zoom out to sun",
 	) {
 		camera.zoom = camera.zoom == 1.0 ? 0.2 : 1.0
-		fmt.println(camera.zoom)
 	}
 	// rl.GuiMessageBox({20, 20, 200, 100}, "Message Box", "the content", "OK;Cancel")
 }
